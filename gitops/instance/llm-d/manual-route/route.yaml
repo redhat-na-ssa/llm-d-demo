@@ -1,0 +1,39 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: gpt-oss-20b-kludge
+  namespace: demo-llm
+  labels:
+    # internal.istio.io/service-semantics: inferencepool
+    # istio.io/inferencepool-extension-failure-mode: FailOpen
+    # istio.io/inferencepool-extension-port: '9002'
+    # istio.io/inferencepool-extension-service: gpt-oss-20b-epp-service
+    # istio.io/inferencepool-name: gpt-oss-20b-inference-pool
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  selector:
+    app.kubernetes.io/name: gpt-oss-20b
+    app.kubernetes.io/part-of: llminferenceservice
+    kserve.io/component: workload
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: gpt-oss-20b
+  namespace: demo-llm
+spec:
+  to:
+    name: gpt-oss-20b-kludge
+    weight: 100
+    kind: Service
+  host: ''
+  path: ''
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  port:
+    targetPort: 8000
