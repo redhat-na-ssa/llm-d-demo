@@ -30,8 +30,7 @@ spec:
     name: gpt-oss-20b-kludge
     weight: 100
     kind: Service
-  host: ''
-  path: ''
+  path: demo-llm/gpt-oss-20b
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: reencrypt
