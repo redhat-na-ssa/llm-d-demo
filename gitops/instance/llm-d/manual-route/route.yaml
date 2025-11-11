@@ -13,6 +13,7 @@ metadata:
 spec:
   ports:
     - protocol: TCP
+      name: https
       port: 8000
       targetPort: 8000
   selector:
@@ -27,7 +28,7 @@ metadata:
   namespace: demo-llm
 spec:
   to:
-    name: gpt-oss-20b-kludge
+    name: gpt-oss-20b-kserve-workload-svc
     weight: 100
     kind: Service
   path: /demo-llm/gpt-oss-20b
@@ -35,4 +36,4 @@ spec:
     insecureEdgeTerminationPolicy: Redirect
     termination: reencrypt
   port:
-    targetPort: 8000
+    targetPort: https
